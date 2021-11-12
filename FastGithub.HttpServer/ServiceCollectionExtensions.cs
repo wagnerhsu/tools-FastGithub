@@ -1,6 +1,5 @@
 ﻿using FastGithub.HttpServer;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace FastGithub
 {
     /// <summary>
@@ -18,9 +17,15 @@ namespace FastGithub
             return services
                 .AddMemoryCache()
                 .AddHttpForwarder()
-                .AddSingleton<CertService>() 
+                .AddSingleton<CertService>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfMacOS>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfWindows>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfLinuxRedHat>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfLinuxCentOS>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfLinuxDebian>()
+                .AddSingleton<ICaCertInstaller, CaCertInstallerOfLinuxUbuntu>()
                 .AddSingleton<HttpProxyMiddleware>()
-                .AddSingleton<RequestLoggingMiddleware>()                
+                .AddSingleton<RequestLoggingMiddleware>()
                 .AddSingleton<HttpReverseProxyMiddleware>();
         }
     }
